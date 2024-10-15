@@ -1,7 +1,7 @@
 //! Development-related functionality.
 
 // TODO(tarcieri): implement full set of tests from ECDSA2VS
-// <https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Algorithm-Validation-Program/documents/dss2/ecdsa2vs.pdf>
+// <https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Algorithm-Validation-Program/documents/dss2/earthbucks_ecdsa2vs.pdf>
 
 use crate::EcdsaCurve;
 use elliptic_curve::dev::MockCurve;
@@ -57,7 +57,7 @@ macro_rules! new_signing_test {
         }
 
         #[test]
-        fn ecdsa_signing() {
+        fn earthbucks_ecdsa_signing() {
             for vector in $vectors {
                 let d = decode_scalar(vector.d).expect("invalid vector.d");
                 let k = decode_scalar(vector.k).expect("invalid vector.m");
@@ -95,7 +95,7 @@ macro_rules! new_verification_test {
         };
 
         #[test]
-        fn ecdsa_verify_success() {
+        fn earthbucks_ecdsa_verify_success() {
             for vector in $vectors {
                 let q_encoded = EncodedPoint::<$curve>::from_affine_coordinates(
                     &Array::try_from(vector.q_x).unwrap(),
@@ -117,7 +117,7 @@ macro_rules! new_verification_test {
         }
 
         #[test]
-        fn ecdsa_verify_invalid_s() {
+        fn earthbucks_ecdsa_verify_invalid_s() {
             for vector in $vectors {
                 let q_encoded = EncodedPoint::<$curve>::from_affine_coordinates(
                     &Array::try_from(vector.q_x).unwrap(),

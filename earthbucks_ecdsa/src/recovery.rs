@@ -4,7 +4,7 @@ use crate::{Error, Result};
 
 #[cfg(feature = "signing")]
 use {
-    crate::{hazmat::sign_prehashed_rfc6979, SigningKey},
+    crate::{hazmat::sign_prehashed_earthbucks_rfc6979, SigningKey},
     elliptic_curve::subtle::CtOption,
     signature::{hazmat::PrehashSigner, DigestSigner, Signer},
 };
@@ -181,7 +181,7 @@ where
     /// Sign the given message prehash, returning a signature and recovery ID.
     pub fn sign_prehash_recoverable(&self, prehash: &[u8]) -> Result<(Signature<C>, RecoveryId)> {
         let z = bits2field::<C>(prehash)?;
-        sign_prehashed_rfc6979::<C, C::Digest>(self.as_nonzero_scalar(), &z, &[])
+        sign_prehashed_earthbucks_rfc6979::<C, C::Digest>(self.as_nonzero_scalar(), &z, &[])
     }
 
     /// Sign the given message digest, returning a signature and recovery ID.

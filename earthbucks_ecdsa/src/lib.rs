@@ -42,15 +42,15 @@
 //!
 //! For example, the [`ring-compat`] crate implements the [`signature::Signer`]
 //! and [`signature::Verifier`] traits in conjunction with the
-//! [`p256::ecdsa::Signature`] and [`p384::ecdsa::Signature`] types to
+//! [`p256::earthbucks_ecdsa::Signature`] and [`p384::earthbucks_ecdsa::Signature`] types to
 //! wrap the ECDSA implementations from [*ring*] in a generic, interoperable
 //! API.
 //!
 //! [`k256`]: https://docs.rs/k256
 //! [`p256`]: https://docs.rs/p256
-//! [`p256::ecdsa::Signature`]: https://docs.rs/p256/latest/p256/ecdsa/type.Signature.html
+//! [`p256::earthbucks_ecdsa::Signature`]: https://docs.rs/p256/latest/p256/earthbucks_ecdsa/type.Signature.html
 //! [`p384`]: https://docs.rs/p384
-//! [`p384::ecdsa::Signature`]: https://docs.rs/p384/latest/p384/ecdsa/type.Signature.html
+//! [`p384::earthbucks_ecdsa::Signature`]: https://docs.rs/p384/latest/p384/earthbucks_ecdsa/type.Signature.html
 //! [`ring-compat`]: https://docs.rs/ring-compat
 //! [*ring*]: https://docs.rs/ring
 
@@ -122,8 +122,8 @@ use elliptic_curve::pkcs8::spki::{
 /// OID for ECDSA with SHA-224 digests.
 ///
 /// ```text
-/// ecdsa-with-SHA224 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
-///      us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 1 }
+/// earthbucks_ecdsa-with-SHA224 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
+///      us(840) ansi-X9-62(10045) signatures(4) earthbucks_ecdsa-with-SHA2(3) 1 }
 /// ```
 // TODO(tarcieri): use `ObjectIdentifier::push_arc` when const unwrap is stable
 #[cfg(feature = "digest")]
@@ -132,8 +132,8 @@ pub const ECDSA_SHA224_OID: ObjectIdentifier = ObjectIdentifier::new_unwrap("1.2
 /// OID for ECDSA with SHA-256 digests.
 ///
 /// ```text
-/// ecdsa-with-SHA256 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
-///      us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 2 }
+/// earthbucks_ecdsa-with-SHA256 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
+///      us(840) ansi-X9-62(10045) signatures(4) earthbucks_ecdsa-with-SHA2(3) 2 }
 /// ```
 #[cfg(feature = "digest")]
 pub const ECDSA_SHA256_OID: ObjectIdentifier = ObjectIdentifier::new_unwrap("1.2.840.10045.4.3.2");
@@ -141,8 +141,8 @@ pub const ECDSA_SHA256_OID: ObjectIdentifier = ObjectIdentifier::new_unwrap("1.2
 /// OID for ECDSA with SHA-384 digests.
 ///
 /// ```text
-/// ecdsa-with-SHA384 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
-///      us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 3 }
+/// earthbucks_ecdsa-with-SHA384 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
+///      us(840) ansi-X9-62(10045) signatures(4) earthbucks_ecdsa-with-SHA2(3) 3 }
 /// ```
 #[cfg(feature = "digest")]
 pub const ECDSA_SHA384_OID: ObjectIdentifier = ObjectIdentifier::new_unwrap("1.2.840.10045.4.3.3");
@@ -150,8 +150,8 @@ pub const ECDSA_SHA384_OID: ObjectIdentifier = ObjectIdentifier::new_unwrap("1.2
 /// OID for ECDSA with SHA-512 digests.
 ///
 /// ```text
-/// ecdsa-with-SHA512 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
-///      us(840) ansi-X9-62(10045) signatures(4) ecdsa-with-SHA2(3) 4 }
+/// earthbucks_ecdsa-with-SHA512 OBJECT IDENTIFIER ::= { iso(1) member-body(2)
+///      us(840) ansi-X9-62(10045) signatures(4) earthbucks_ecdsa-with-SHA2(3) 4 }
 /// ```
 #[cfg(feature = "digest")]
 pub const ECDSA_SHA512_OID: ObjectIdentifier = ObjectIdentifier::new_unwrap("1.2.840.10045.4.3.4");
@@ -376,7 +376,7 @@ where
     SignatureSize<C>: ArraySize,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "ecdsa::Signature<{:?}>(", C::default())?;
+        write!(f, "earthbucks_ecdsa::Signature<{:?}>(", C::default())?;
 
         for byte in self.to_bytes() {
             write!(f, "{:02X}", byte)?;
@@ -469,7 +469,7 @@ where
     C: hazmat::DigestPrimitive,
     C::Digest: AssociatedOid,
 {
-    const OID: ObjectIdentifier = match ecdsa_oid_for_digest(C::Digest::OID) {
+    const OID: ObjectIdentifier = match earthbucks_ecdsa_oid_for_digest(C::Digest::OID) {
         Some(oid) => oid,
         None => panic!("no RFC5758 ECDSA OID defined for DigestPrimitive::Digest"),
     };
@@ -582,7 +582,7 @@ where
     where
         D: AssociatedOid + Digest,
     {
-        let oid = ecdsa_oid_for_digest(D::OID).ok_or_else(Error::new)?;
+        let oid = earthbucks_ecdsa_oid_for_digest(D::OID).ok_or_else(Error::new)?;
         Ok(Self { signature, oid })
     }
 
@@ -761,7 +761,7 @@ where
 
 /// Get the ECDSA OID for a given digest OID.
 #[cfg(feature = "digest")]
-const fn ecdsa_oid_for_digest(digest_oid: ObjectIdentifier) -> Option<ObjectIdentifier> {
+const fn earthbucks_ecdsa_oid_for_digest(digest_oid: ObjectIdentifier) -> Option<ObjectIdentifier> {
     match digest_oid {
         SHA224_OID => Some(ECDSA_SHA224_OID),
         SHA256_OID => Some(ECDSA_SHA256_OID),

@@ -1,8 +1,8 @@
 [workspace]
 resolver = "2"
 members = [
-    "ecdsa",
-    "rfc6979",
+    "earthbucks_ecdsa",
+    "earthbucks_rfc6979",
 ]
 
 [profile.dev]
@@ -11,5 +11,5 @@ opt-level = 2
 [patch.crates-io]
 # A global patch crates-io block is used to avoid duplicate dependencies
 # when pulling a member crate through git
-ecdsa           = { path = "./ecdsa" }
-rfc6979         = { path = "./rfc6979" }
+earthbucks_ecdsa           = { path = "./earthbucks_ecdsa" }
+earthbucks_rfc6979         = { path = "./earthbucks_rfc6979" }

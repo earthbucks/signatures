@@ -36,7 +36,7 @@ use {
     },
 };
 
-#[cfg(feature = "rfc6979")]
+#[cfg(feature = "earthbucks_rfc6979")]
 use elliptic_curve::FieldBytesEncoding;
 
 #[cfg(any(feature = "arithmetic", feature = "digest"))]
@@ -75,7 +75,7 @@ where
 /// larger than the size of the curve's scalar field into a serialized
 /// (unreduced) field element.
 ///
-/// [RFC6979 § 2.3.2]: https://datatracker.ietf.org/doc/html/rfc6979#section-2.3.2
+/// [RFC6979 § 2.3.2]: https://datatracker.ietf.org/doc/html/earthbucks_rfc6979#section-2.3.2
 /// [SEC1]: https://www.secg.org/sec1-v2.pdf
 pub fn bits2field<C: EcdsaCurve>(bits: &[u8]) -> Result<FieldBytes<C>> {
     // Minimum allowed bits size is half the field size
@@ -166,9 +166,9 @@ where
 /// - `z`: message digest to be signed, i.e. `H(m)`. Does not have to be reduced in advance.
 /// - `ad`: optional additional data, e.g. added entropy from an RNG
 ///
-/// [RFC6979]: https://datatracker.ietf.org/doc/html/rfc6979
-#[cfg(feature = "rfc6979")]
-pub fn sign_prehashed_rfc6979<C, D>(
+/// [RFC6979]: https://datatracker.ietf.org/doc/html/earthbucks_rfc6979
+#[cfg(feature = "earthbucks_rfc6979")]
+pub fn sign_prehashed_earthbucks_rfc6979<C, D>(
     d: &NonZeroScalar<C>,
     z: &FieldBytes<C>,
     ad: &[u8],
@@ -186,7 +186,7 @@ where
     // h = bits2int(H(m)) mod q
     let z2 = <Scalar<C> as Reduce<C::Uint>>::reduce_bytes(z);
 
-    let k = NonZeroScalar::<C>::from_repr(rfc6979::generate_k::<D, _>(
+    let k = NonZeroScalar::<C>::from_repr(earthbucks_rfc6979::generate_k::<D, _>(
         &d.to_repr(),
         &C::ORDER.encode_field_bytes(),
         &z2.to_repr(),

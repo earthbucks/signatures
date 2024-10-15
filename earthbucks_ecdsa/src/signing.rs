@@ -1,8 +1,8 @@
 //! ECDSA signing: producing signatures using a [`SigningKey`].
 
 use crate::{
-    ecdsa_oid_for_digest,
-    hazmat::{bits2field, sign_prehashed_rfc6979, DigestPrimitive},
+    earthbucks_ecdsa_oid_for_digest,
+    hazmat::{bits2field, sign_prehashed_earthbucks_rfc6979, DigestPrimitive},
     EcdsaCurve, Error, Result, Signature, SignatureSize, SignatureWithOid,
 };
 use core::fmt::{self, Debug};
@@ -59,7 +59,7 @@ use elliptic_curve::pkcs8::{EncodePrivateKey, SecretDocument};
 /// - [`DigestSigner`]: sign the output of a [`Digest`] using this key
 /// - [`PrehashSigner`]: sign the low-level raw output bytes of a message digest
 ///
-/// See the [`p256` crate](https://docs.rs/p256/latest/p256/ecdsa/index.html)
+/// See the [`p256` crate](https://docs.rs/p256/latest/p256/earthbucks_ecdsa/index.html)
 /// for examples of using this type with a concrete elliptic curve.
 #[derive(Clone)]
 pub struct SigningKey<C>
@@ -131,7 +131,7 @@ where
 /// Sign message digest using a deterministic ephemeral scalar (`k`)
 /// computed using the algorithm described in [RFC6979 § 3.2].
 ///
-/// [RFC6979 § 3.2]: https://tools.ietf.org/html/rfc6979#section-3
+/// [RFC6979 § 3.2]: https://tools.ietf.org/html/earthbucks_rfc6979#section-3
 impl<C, D> DigestSigner<D, Signature<C>> for SigningKey<C>
 where
     C: EcdsaCurve + CurveArithmetic + DigestPrimitive,
@@ -147,7 +147,7 @@ where
 /// Sign message prehash using a deterministic ephemeral scalar (`k`)
 /// computed using the algorithm described in [RFC6979 § 3.2].
 ///
-/// [RFC6979 § 3.2]: https://tools.ietf.org/html/rfc6979#section-3
+/// [RFC6979 § 3.2]: https://tools.ietf.org/html/earthbucks_rfc6979#section-3
 impl<C> PrehashSigner<Signature<C>> for SigningKey<C>
 where
     C: EcdsaCurve + CurveArithmetic + DigestPrimitive,
@@ -156,14 +156,14 @@ where
 {
     fn sign_prehash(&self, prehash: &[u8]) -> Result<Signature<C>> {
         let z = bits2field::<C>(prehash)?;
-        Ok(sign_prehashed_rfc6979::<C, C::Digest>(&self.secret_scalar, &z, &[])?.0)
+        Ok(sign_prehashed_earthbucks_rfc6979::<C, C::Digest>(&self.secret_scalar, &z, &[])?.0)
     }
 }
 
 /// Sign message using a deterministic ephemeral scalar (`k`)
 /// computed using the algorithm described in [RFC6979 § 3.2].
 ///
-/// [RFC6979 § 3.2]: https://tools.ietf.org/html/rfc6979#section-3
+/// [RFC6979 § 3.2]: https://tools.ietf.org/html/earthbucks_rfc6979#section-3
 impl<C> Signer<Signature<C>> for SigningKey<C>
 where
     C: EcdsaCurve + CurveArithmetic + DigestPrimitive,
@@ -205,7 +205,7 @@ where
         let z = bits2field::<C>(prehash)?;
         let mut ad = FieldBytes::<C>::default();
         rng.fill_bytes(&mut ad);
-        Ok(sign_prehashed_rfc6979::<C, C::Digest>(&self.secret_scalar, &z, &ad)?.0)
+        Ok(sign_prehashed_earthbucks_rfc6979::<C, C::Digest>(&self.secret_scalar, &z, &ad)?.0)
     }
 }
 
@@ -230,7 +230,7 @@ where
 {
     fn try_sign_digest(&self, msg_digest: D) -> Result<SignatureWithOid<C>> {
         let signature: Signature<C> = self.try_sign_digest(msg_digest)?;
-        let oid = ecdsa_oid_for_digest(D::OID).ok_or_else(Error::new)?;
+        let oid = earthbucks_ecdsa_oid_for_digest(D::OID).ok_or_else(Error::new)?;
         SignatureWithOid::new(signature, oid)
     }
 }
