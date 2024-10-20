@@ -13,7 +13,7 @@
 //!
 //! ```
 //! use hex_literal::hex;
-//! use earthbucks_rfc6979::consts::U32;
+//! use rfc6979::consts::U32;
 //! use sha2::{Digest, Sha256};
 //!
 //! // NIST P-256 field modulus
@@ -33,7 +33,7 @@
 //!
 //! let h = Sha256::digest(RFC6979_MSG);
 //! let aad = b"";
-//! let k = earthbucks_rfc6979::generate_k::<Sha256, U32>(&RFC6979_KEY.into(), &NIST_P256_MODULUS.into(), &h, aad);
+//! let k = rfc6979::generate_k::<Sha256, U32>(&RFC6979_KEY.into(), &NIST_P256_MODULUS.into(), &h, aad);
 //! assert_eq!(k.as_slice(), &RFC6979_EXPECTED_K);
 //! ```
 

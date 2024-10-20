@@ -1,6 +1,6 @@
 [package]
-name = "earthbucks_ecdsa"
-version = "0.8.1"
+name = "ecdsa"
+version = "0.17.0-pre.9"
 description = """
 Pure Rust implementation of the Elliptic Curve Digital Signature Algorithm
 (ECDSA) as specified in FIPS 186-4 (Digital Signature Standard), providing
@@ -8,7 +8,7 @@ RFC6979 deterministic signatures as well as support for added entropy
 """
 authors = ["RustCrypto Developers"]
 license = "Apache-2.0 OR MIT"
-homepage = "https://github.com/RustCrypto/signatures/tree/master/earthbucks_ecdsa"
+homepage = "https://github.com/RustCrypto/signatures/tree/master/ecdsa"
 repository = "https://github.com/RustCrypto/signatures"
 readme = "README.md"
 categories = ["cryptography", "no-std"]
@@ -23,7 +23,7 @@ signature = { version = "=2.3.0-pre.4", default-features = false, features = ["r
 # optional dependencies
 der = { version = "0.8.0-rc.1", optional = true }
 digest = { version = "=0.11.0-pre.9", optional = true, default-features = false, features = ["oid"] }
-earthbucks_rfc6979 = { version = "=0.5.0-pre.4", optional = true }
+rfc6979 = { version = "=0.5.0-pre.4", optional = true }
 serdect = { version = "0.3.0-rc.0", optional = true, default-features = false, features = ["alloc"] }
 sha2 = { version = "=0.11.0-pre.4", optional = true, default-features = false, features = ["oid"] }
 spki = { version = "0.8.0-rc.0", optional = true, default-features = false }
@@ -45,7 +45,7 @@ hazmat = []
 pkcs8 = ["digest", "elliptic-curve/pkcs8", "der"]
 pem = ["elliptic-curve/pem", "pkcs8"]
 serde = ["elliptic-curve/serde", "serdect"]
-signing = ["arithmetic", "digest", "hazmat", "earthbucks_rfc6979"]
+signing = ["arithmetic", "digest", "hazmat", "rfc6979"]
 verifying = ["arithmetic", "digest", "hazmat"]
 
 [package.metadata.docs.rs]

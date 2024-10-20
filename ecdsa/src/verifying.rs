@@ -65,7 +65,7 @@ use serdect::serde::{de, ser, Deserialize, Serialize};
 /// - [`DigestVerifier`]: verify a message [`Digest`] against a provided key and signature
 /// - [`PrehashVerifier`]: verify the low-level raw output bytes of a message digest
 ///
-/// See the [`p256` crate](https://docs.rs/p256/latest/p256/earthbucks_ecdsa/index.html)
+/// See the [`p256` crate](https://docs.rs/p256/latest/p256/ecdsa/index.html)
 /// for examples of using this type with a concrete elliptic curve.
 ///
 /// # `serde` support

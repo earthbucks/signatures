@@ -187,7 +187,7 @@ where
     <FieldBytesSize<C> as Add>::Output: Add<MaxOverhead> + ArraySize,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "earthbucks_ecdsa::der::Signature<{:?}>(", C::default())?;
+        write!(f, "ecdsa::der::Signature<{:?}>(", C::default())?;
 
         for &byte in self.as_ref() {
             write!(f, "{:02X}", byte)?;
@@ -449,7 +449,7 @@ mod tests {
 
         // But length fields that are not minimally encoded should be rejected, as they are not
         // valid DER, cf.
-        // https://github.com/google/wycheproof/blob/2196000605e4/testvectors/earthbucks_ecdsa_secp256k1_sha256_test.json#L57-L66
+        // https://github.com/google/wycheproof/blob/2196000605e4/testvectors/ecdsa_secp256k1_sha256_test.json#L57-L66
         assert!(Signature::from_der(&[
             der::Tag::Sequence.into(),
             0x81, // extended length: 1 length byte to come
