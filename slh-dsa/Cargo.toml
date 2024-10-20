@@ -1,0 +1,54 @@
+[package]
+name = "slh-dsa"
+description = """
+Pure Rust implementation of SLH-DSA (aka SPHINCS+) as described in the
+FIPS-205 standard
+"""
+version = "0.2.0-pre"
+edition = "2021"
+rust-version = "1.81"
+license = "Apache-2.0 OR MIT"
+homepage = "https://github.com/RustCrypto/signatures/tree/master/slh-dsa"
+repository = "https://github.com/RustCrypto/signatures"
+readme = "README.md"
+categories = ["cryptography"]
+keywords = ["crypto", "signature"]
+
+[dependencies]
+hybrid-array = { version = "0.2.0-rc.10", features = ["extra-sizes"] }
+typenum = { version = "1.17.0", features = ["const-generics"] }
+sha3 = { version = "=0.11.0-pre.4", default-features = false }
+zerocopy = { version = "0.7.34", features = ["derive"] }
+rand_core = { version = "0.6.4" }
+signature = { version = "2.3.0-pre.4", features = ["rand_core"] }
+hmac = "=0.13.0-pre.4"
+sha2 = { version = "=0.11.0-pre.4", default-features = false }
+digest = "=0.11.0-pre.9"
+
+[dev-dependencies]
+hex-literal = "0.4.1"
+hex = { version = "0.4.1", features = ["serde"] }
+num-bigint = "0.4.4"
+quickcheck = "1"
+quickcheck_macros = "1"
+proptest = "1.4.0"
+criterion = "0.5"
+aes = "=0.9.0-pre.2"
+cipher = "=0.5.0-pre.7"
+ctr = "=0.10.0-pre.2"
+rand_core = "0.6.4"
+paste = "1.0.15"
+rand = "0.8.5"
+serde_json = "1.0.124"
+serde = { version = "1.0.207", features = ["derive"] }
+
+[lib]
+bench = false
+
+[[bench]]
+name = "sign_verify"
+harness = false
+
+[features]
+alloc = []
+default = ["alloc"]
